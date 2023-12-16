@@ -1,24 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import { AppProvider } from "@shopify/polaris";
+import "./App.css";
+import AppLayout from "./layout/AppLayout";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppProvider
+      theme={{
+        logo: {
+          width: 105,
+          topBarSource: "https://cdn1.avada.io/logo/avada_logo_final_color.png",
+        },
+      }}
+    >
+      <AppLayout />
+    </AppProvider>
   );
 }
 
