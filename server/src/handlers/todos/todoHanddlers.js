@@ -4,6 +4,7 @@ import {
   create as createTodo,
   update as updateTodo,
   remove as removeTodo,
+  removeMany as removeManyTodos
 } from "../../database/todoRepository";
 
 export async function getTodos(ctx) {
@@ -89,5 +90,22 @@ export async function removeOne(ctx) {
       success: false,
       error: e.message,
     };
+  }
+}
+
+export async function removeMany(ctx) {
+  try {
+    const data = ctx.request.body;
+    console.log(data)
+    removeManyTodos(data)
+    ctx.body = {
+      success: true
+    }
+  } catch (error) {
+    ctx.status = 400
+    ctx.body = {
+      success: false,
+      error: error.message
+    }
   }
 }

@@ -7,6 +7,7 @@ exports.create = create;
 exports.getAll = getAll;
 exports.getOne = getOne;
 exports.remove = remove;
+exports.removeMany = removeMany;
 exports.update = update;
 var _fs = _interopRequireDefault(require("fs"));
 var _todos = _interopRequireDefault(require("./todos.json"));
@@ -45,5 +46,9 @@ function remove({
     _todos.default.splice(index, 1);
     return _fs.default.writeFileSync("./src/database/todos.json", JSON.stringify(_todos.default));
   }
+}
+function removeMany(array) {
+  const updatedTodos = _todos.default.filter(todo => !array.includes(todo.id));
+  return _fs.default.writeFileSync("./src/database/todos.json", JSON.stringify(updatedTodos));
 }
 //# sourceMappingURL=todoRepository.js.map

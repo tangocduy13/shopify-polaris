@@ -37,3 +37,8 @@ export function remove({ id }) {
     return fs.writeFileSync("./src/database/todos.json", JSON.stringify(todos));
   }
 }
+
+export function removeMany(array) {
+  const updatedTodos = todos.filter((todo) => !array.includes(todo.id));
+  return fs.writeFileSync("./src/database/todos.json", JSON.stringify(updatedTodos))
+}

@@ -18,5 +18,6 @@ router.get("/todos/:id", todoHandlers.getOne);
 router.post("/todos", _todoMiddleware.default, todoHandlers.createOne);
 router.put("/todos/:id", todoHandlers.updateOne);
 router.delete("/todos/:id", todoHandlers.removeOne);
+router.delete("/todos", todoHandlers.removeMany);
 var _default = exports.default = router;
 //# sourceMappingURL=routes.js.map

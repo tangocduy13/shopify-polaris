@@ -11,5 +11,6 @@ router.get("/todos/:id", todoHandlers.getOne);
 router.post("/todos", todoMiddleware, todoHandlers.createOne);
 router.put("/todos/:id", todoHandlers.updateOne);
 router.delete("/todos/:id", todoHandlers.removeOne);
+router.delete("/todos", todoHandlers.removeMany);
 
 export default router;

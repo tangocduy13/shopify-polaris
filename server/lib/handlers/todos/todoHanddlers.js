@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.createOne = createOne;
 exports.getOne = getOne;
 exports.getTodos = getTodos;
+exports.removeMany = removeMany;
 exports.removeOne = removeOne;
 exports.updateOne = updateOne;
 var _todoRepository = require("../../database/todoRepository");
@@ -88,6 +89,22 @@ async function removeOne(ctx) {
     ctx.body = {
       success: false,
       error: e.message
+    };
+  }
+}
+async function removeMany(ctx) {
+  try {
+    const data = ctx.request.body;
+    console.log(data);
+    (0, _todoRepository.removeMany)(data);
+    ctx.body = {
+      success: true
+    };
+  } catch (error) {
+    ctx.status = 400;
+    ctx.body = {
+      success: false,
+      error: error.message
     };
   }
 }

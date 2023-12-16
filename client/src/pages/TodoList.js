@@ -34,25 +34,18 @@ const TodoList = () => {
 
   const promotedBulkActions = [
     {
-      content: "Edit todos",
-      onAction: () => console.log("Todo: implement bulk edit"),
-    },
-  ];
-
-  const bulkActions = [
-    {
       content: "Complete",
       onAction: () => console.log("Todo: implement bulk add tags"),
     },
     {
       content: "Delete",
-      onAction: () => console.log("Todo: implement bulk remove tags"),
+      onAction: () => removeTodo(selectedItems),
     },
   ];
 
   const addTodo = async (title) => {
     const { data } = await axiosTodo.post("/todos", {
-      id: Math.floor(Math.random() * (500 - 11 + 1)) + 11,
+      id: Math.floor(Math.random() * (500 - 1 + 1)) + 1,
       title: title,
       completed: false,
     });
@@ -60,6 +53,21 @@ const TodoList = () => {
     setTodos((prevTodos) => [newTodo, ...prevTodos]);
   };
 
+  const removeTodo = async (array) => {
+    try {
+      const { data } = await axiosTodo.delete("/todos", {
+        data: array,
+      });
+      if (data.success) {
+        const updateTodos = todos.filter((todo) => !array.includes(todo.id))
+        setTodos(updateTodos);
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setSelectedItems([])
+    }
+  }
   return (
     <Page
       title="Todos"
@@ -77,7 +85,6 @@ const TodoList = () => {
               onSelectionChange={setSelectedItems}
               loading={loading}
               promotedBulkActions={promotedBulkActions}
-              bulkActions={bulkActions}
               resolveItemId={resolveItemIds}
             />
           </Card>
@@ -99,7 +106,7 @@ const TodoList = () => {
               {completed ? "done" : "pending"}
             </Badge>
             <Button>Completed</Button>
-            <Button destructive>Delete</Button>
+            <Button destructive onClick={() => { removeTodo([id]) }}>Delete</Button>
           </Stack>
         </Stack>
       </ResourceItem>
