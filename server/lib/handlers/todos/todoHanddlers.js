@@ -8,6 +8,7 @@ exports.getOne = getOne;
 exports.getTodos = getTodos;
 exports.removeMany = removeMany;
 exports.removeOne = removeOne;
+exports.updateMany = updateMany;
 exports.updateOne = updateOne;
 var _todoRepository = require("../../database/todoRepository");
 async function getTodos(ctx) {
@@ -75,6 +76,22 @@ async function updateOne(ctx) {
     };
   }
 }
+async function updateMany(ctx) {
+  try {
+    const {
+      data
+    } = ctx.request.body;
+    (0, _todoRepository.updateMany)(data);
+    ctx.body = {
+      success: true
+    };
+  } catch (error) {
+    ctx.status = 400, ctx.body = {
+      success: false,
+      error: error.message
+    };
+  }
+}
 async function removeOne(ctx) {
   try {
     const id = ctx.params.id;
@@ -95,7 +112,6 @@ async function removeOne(ctx) {
 async function removeMany(ctx) {
   try {
     const data = ctx.request.body;
-    console.log(data);
     (0, _todoRepository.removeMany)(data);
     ctx.body = {
       success: true

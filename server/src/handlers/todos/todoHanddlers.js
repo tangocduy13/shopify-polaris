@@ -4,7 +4,8 @@ import {
   create as createTodo,
   update as updateTodo,
   remove as removeTodo,
-  removeMany as removeManyTodos
+  removeMany as removeManyTodos,
+  updateMany as updateManyTodos,
 } from "../../database/todoRepository";
 
 export async function getTodos(ctx) {
@@ -60,7 +61,6 @@ export async function createOne(ctx) {
 
 export async function updateOne(ctx) {
   try {
-
     let id = ctx.params.id;
     updateTodo({ id });
 
@@ -73,6 +73,22 @@ export async function updateOne(ctx) {
       success: false,
       error: e.message,
     };
+  }
+}
+
+export async function updateMany(ctx) {
+  try {
+    const { data } = ctx.request.body;
+    updateManyTodos(data);
+    ctx.body = {
+      success: true,
+    };
+  } catch (error) {
+    (ctx.status = 400),
+      (ctx.body = {
+        success: false,
+        error: error.message,
+      });
   }
 }
 
@@ -96,16 +112,15 @@ export async function removeOne(ctx) {
 export async function removeMany(ctx) {
   try {
     const data = ctx.request.body;
-    console.log(data)
-    removeManyTodos(data)
+    removeManyTodos(data);
     ctx.body = {
-      success: true
-    }
+      success: true,
+    };
   } catch (error) {
-    ctx.status = 400
+    ctx.status = 400;
     ctx.body = {
       success: false,
-      error: error.message
-    }
+      error: error.message,
+    };
   }
 }

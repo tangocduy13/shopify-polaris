@@ -11,7 +11,7 @@ export function getOne({ id }) {
 }
 
 export function create(data) {
-  console.log(data)
+  console.log(data);
   const updatedTodos = [data, ...todos];
   return fs.writeFileSync(
     "./src/database/todos.json",
@@ -19,26 +19,25 @@ export function create(data) {
   );
 }
 
-export function update({ id }) {
-  let todoId = parseInt(id);
-  const index = todos.findIndex((todo) => todo.id == todoId);
-  if (index !== -1) {
-    const completed = todos[index].completed
-    todos[index].completed = !completed;
-    return fs.writeFileSync("./src/database/todos.json", JSON.stringify(todos));
-  }
-}
-
-export function remove({ id }) {
-  let todoId = parseInt(id);
-  const index = todos.findIndex((todo) => todo.id == todoId);
-  if (index !== -1) {
-    todos.splice(index, 1);
-    return fs.writeFileSync("./src/database/todos.json", JSON.stringify(todos));
-  }
+export function updateMany(array) {
+  const updatedTodos = todos.map((todo) => {
+    if (array.includes(todo.id)) {
+      return {
+        ...todo,
+        completed: !todo.completed,
+      }; // map return về một mảng mới
+    } else return todo;
+  });
+  return fs.writeFileSync(
+    "./src/database/todos.json",
+    JSON.stringify(updatedTodos)
+  );
 }
 
 export function removeMany(array) {
   const updatedTodos = todos.filter((todo) => !array.includes(todo.id));
-  return fs.writeFileSync("./src/database/todos.json", JSON.stringify(updatedTodos))
+  return fs.writeFileSync(
+    "./src/database/todos.json",
+    JSON.stringify(updatedTodos)
+  );
 }

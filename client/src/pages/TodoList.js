@@ -35,7 +35,7 @@ const TodoList = () => {
   const promotedBulkActions = [
     {
       content: "Complete",
-      onAction: () => console.log("Todo: implement bulk add tags"),
+      onAction: () => completeTodo(selectedItems),
     },
     {
       content: "Delete",
@@ -59,15 +59,38 @@ const TodoList = () => {
         data: array,
       });
       if (data.success) {
-        const updateTodos = todos.filter((todo) => !array.includes(todo.id))
-        setTodos(updateTodos);
+        const updatedTodos = todos.filter((todo) => !array.includes(todo.id));
+        setTodos(updatedTodos);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      setSelectedItems([])
+      setSelectedItems([]);
     }
-  }
+  };
+
+  const completeTodo = async (array) => {
+    try {
+      const { data } = await axiosTodo.patch("/todos", {
+        data: array,
+      });
+      if (data.success) {
+        const updatedTodos = todos.map((todo) => {
+          if (array.includes(todo.id)) {
+            return {
+              ...todo,
+              completed: !todo.completed,
+            };
+          } else return todo;
+        });
+        setTodos(updatedTodos);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSelectedItems([]);
+    }
+  };
   return (
     <Page
       title="Todos"
@@ -105,8 +128,21 @@ const TodoList = () => {
             <Badge status={completed ? "success" : ""}>
               {completed ? "done" : "pending"}
             </Badge>
-            <Button>Completed</Button>
-            <Button destructive onClick={() => { removeTodo([id]) }}>Delete</Button>
+            <Button
+              onClick={() => {
+                completeTodo([id]);
+              }}
+            >
+              Completed
+            </Button>
+            <Button
+              destructive
+              onClick={() => {
+                removeTodo([id]);
+              }}
+            >
+              Delete
+            </Button>
           </Stack>
         </Stack>
       </ResourceItem>
