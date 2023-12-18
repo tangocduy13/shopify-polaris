@@ -18,11 +18,13 @@ import axiosTodo from "../helpers/api/axiosTodo";
 const TodoList = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [active, setActive] = useState(false);
+  const [loadingModal, setLoadingModal] = useState(false);
 
   const {
     data: todos,
     setData: setTodos,
     loading,
+    setLoading,
   } = useFetchApi({ url: "/todos" });
 
   const resourceName = {
@@ -44,17 +46,26 @@ const TodoList = () => {
   ];
 
   const addTodo = async (title) => {
-    const { data } = await axiosTodo.post("/todos", {
-      id: Math.floor(Math.random() * (500 - 1 + 1)) + 1,
-      title: title,
-      completed: false,
-    });
-    let newTodo = data.data;
-    setTodos((prevTodos) => [newTodo, ...prevTodos]);
+    try {
+      setLoadingModal(true);
+      const { data } = await axiosTodo.post("/todos", {
+        id: Math.floor(Math.random() * (500 - 1 + 1)) + 1,
+        title: title,
+        completed: false,
+      });
+      let newTodo = data.data;
+      setTodos((prevTodos) => [newTodo, ...prevTodos]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingModal(false);
+      setActive(false);
+    }
   };
 
   const removeTodo = async (array) => {
     try {
+      setLoading(true);
       const { data } = await axiosTodo.delete("/todos", {
         data: array,
       });
@@ -65,12 +76,14 @@ const TodoList = () => {
     } catch (error) {
       console.log(error);
     } finally {
+      setLoading(false);
       setSelectedItems([]);
     }
   };
 
   const completeTodo = async (array) => {
     try {
+      setLoading(true);
       const { data } = await axiosTodo.patch("/todos", {
         data: array,
       });
@@ -88,6 +101,7 @@ const TodoList = () => {
     } catch (error) {
       console.log(error);
     } finally {
+      setLoading(false);
       setSelectedItems([]);
     }
   };
@@ -96,7 +110,12 @@ const TodoList = () => {
       title="Todos"
       primaryAction={{ content: "Create todo", onAction: () => toggleModal() }}
     >
-      <TodoModal active={active} onClose={toggleModal} handleSubmit={addTodo} />
+      <TodoModal
+        loading={loadingModal}
+        active={active}
+        onClose={toggleModal}
+        handleSubmit={addTodo}
+      />
       <Layout>
         <Layout.Section>
           <Card>
