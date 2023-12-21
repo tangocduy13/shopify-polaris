@@ -49,7 +49,7 @@ const TodoList = () => {
     try {
       setLoadingModal(true);
       const { data } = await axiosTodo.post("/todos", {
-        id: Math.floor(Math.random() * (500 - 1 + 1)) + 1,
+        // id: Math.floor(Math.random() * (500 - 1 + 1)) + 1, Không tạo ID trên FE
         title: title,
         completed: false,
       });

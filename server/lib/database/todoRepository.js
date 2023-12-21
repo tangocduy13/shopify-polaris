@@ -24,7 +24,12 @@ function getOne({
 }
 function create(data) {
   console.log(data);
-  const updatedTodos = [data, ..._todos.default];
+  const id = Math.floor(Math.random() * (500 - 1 + 1)) + 1;
+  const newTodo = {
+    ...data,
+    id: id
+  };
+  const updatedTodos = [newTodo, ..._todos.default];
   return _fs.default.writeFileSync("./src/database/todos.json", JSON.stringify(updatedTodos));
 }
 function update({

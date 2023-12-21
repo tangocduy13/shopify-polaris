@@ -12,7 +12,12 @@ export function getOne({ id }) {
 
 export function create(data) {
   console.log(data);
-  const updatedTodos = [data, ...todos];
+  const id = Math.floor(Math.random() * (500 - 1 + 1)) + 1;
+  const newTodo = {
+    ...data,
+    id: id,
+  };
+  const updatedTodos = [newTodo, ...todos];
   return fs.writeFileSync(
     "./src/database/todos.json",
     JSON.stringify(updatedTodos)
