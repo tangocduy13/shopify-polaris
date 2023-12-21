@@ -1,4 +1,4 @@
-import { Form, FormLayout, Modal, TextField } from "@shopify/polaris";
+import { Form, FormLayout, Frame, Modal, TextField } from "@shopify/polaris";
 import { useCallback, useState } from "react";
 
 const TodoModal = ({ active, onClose, handleSubmit = () => {} }) => {
@@ -38,6 +38,7 @@ const TodoModal = ({ active, onClose, handleSubmit = () => {} }) => {
             onSubmit={(e) => {
               e.preventDefault();
               handleSubmit(title);
+              setTitle("");
             }}
           >
             <FormLayout>

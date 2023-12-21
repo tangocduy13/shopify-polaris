@@ -6,12 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.create = create;
 exports.getAll = getAll;
 exports.getOne = getOne;
-exports.remove = remove;
 exports.removeMany = removeMany;
-exports.update = update;
 exports.updateMany = updateMany;
 var _fs = _interopRequireDefault(require("fs"));
 var _todos = _interopRequireDefault(require("./todos.json"));
+var _writeToFile = _interopRequireDefault(require("../helpers/writeToFile"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function getAll() {
   return _todos.default;
@@ -23,25 +22,14 @@ function getOne({
   return _todos.default.find(todo => todo.id == todoId);
 }
 function create(data) {
-  console.log(data);
   const id = Math.floor(Math.random() * (500 - 1 + 1)) + 1;
   const newTodo = {
     ...data,
     id: id
   };
   const updatedTodos = [newTodo, ..._todos.default];
-  return _fs.default.writeFileSync("./src/database/todos.json", JSON.stringify(updatedTodos));
-}
-function update({
-  id
-}) {
-  let todoId = parseInt(id);
-  const index = _todos.default.findIndex(todo => todo.id == todoId);
-  if (index !== -1) {
-    const completed = _todos.default[index].completed;
-    _todos.default[index].completed = !completed;
-    return _fs.default.writeFileSync("./src/database/todos.json", JSON.stringify(_todos.default));
-  }
+  (0, _writeToFile.default)(updatedTodos);
+  return newTodo; // trả dữ liệu lên FE để thêm mới vào todo list
 }
 function updateMany(array) {
   const updatedTodos = _todos.default.map(todo => {
@@ -52,20 +40,10 @@ function updateMany(array) {
       }; // map return về một mảng mới
     } else return todo;
   });
-  return _fs.default.writeFileSync("./src/database/todos.json", JSON.stringify(updatedTodos));
-}
-function remove({
-  id
-}) {
-  let todoId = parseInt(id);
-  const index = _todos.default.findIndex(todo => todo.id == todoId);
-  if (index !== -1) {
-    _todos.default.splice(index, 1);
-    return _fs.default.writeFileSync("./src/database/todos.json", JSON.stringify(_todos.default));
-  }
+  (0, _writeToFile.default)(updatedTodos);
 }
 function removeMany(array) {
   const updatedTodos = _todos.default.filter(todo => !array.includes(todo.id));
-  return _fs.default.writeFileSync("./src/database/todos.json", JSON.stringify(updatedTodos));
+  (0, _writeToFile.default)(updatedTodos);
 }
 //# sourceMappingURL=todoRepository.js.map

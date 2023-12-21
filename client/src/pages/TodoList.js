@@ -152,7 +152,7 @@ const TodoList = () => {
                 completeTodo([id]);
               }}
             >
-              Completed
+              {completed ? "Uncomplete" : "Complete"}
             </Button>
             <Button
               destructive

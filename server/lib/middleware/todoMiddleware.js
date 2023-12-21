@@ -11,7 +11,7 @@ async function todoInputMiddleware(ctx, next) {
   try {
     const postData = ctx.request.body;
     let schema = yup.object().shape({
-      title: yup.string().required(),
+      title: yup.string().trim().required(),
       completed: yup.boolean().required()
     });
     await schema.validate(postData);

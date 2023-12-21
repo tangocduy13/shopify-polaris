@@ -45,10 +45,10 @@ async function getOne(ctx) {
 async function createOne(ctx) {
   try {
     const postData = ctx.request.body;
-    (0, _todoRepository.create)(postData);
+    const newTodo = (0, _todoRepository.create)(postData);
     ctx.status = 201;
     return ctx.body = {
-      data: postData,
+      data: newTodo,
       success: true
     };
   } catch (e) {

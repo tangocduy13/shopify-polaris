@@ -44,10 +44,10 @@ export async function createOne(ctx) {
   try {
     const postData = ctx.request.body;
 
-    createTodo(postData);
+    const newTodo = createTodo(postData);
     ctx.status = 201;
     return (ctx.body = {
-      data: postData,
+      data: newTodo,
       success: true,
     });
   } catch (e) {
