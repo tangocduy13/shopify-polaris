@@ -1,6 +1,7 @@
 import { AppProvider } from "@shopify/polaris";
 import "./App.css";
 import AppLayout from "./layout/AppLayout";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         },
       }}
     >
+      <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
       <AppLayout />
     </AppProvider>
   );

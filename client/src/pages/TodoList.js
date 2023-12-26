@@ -14,6 +14,7 @@ import React, { useCallback } from "react";
 import { useState } from "react";
 import TodoModal from "../components/Modal/TodoModal";
 import axiosTodo from "../helpers/api/axiosTodo";
+import { toast } from "react-hot-toast";
 
 const TodoList = () => {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -56,7 +57,7 @@ const TodoList = () => {
       let newTodo = data.data;
       setTodos((prevTodos) => [newTodo, ...prevTodos]);
     } catch (error) {
-      console.log(error);
+      toast.error("You have not entered a title yet!");
     } finally {
       setLoadingModal(false);
       setActive(false);

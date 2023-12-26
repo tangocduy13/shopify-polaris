@@ -1,15 +1,24 @@
-import { Form, FormLayout, Modal, TextField } from "@shopify/polaris";
+import {
+  Form,
+  FormLayout,
+  Modal,
+  TextField,
+  TextStyle,
+} from "@shopify/polaris";
 import { useCallback, useState } from "react";
 
 const TodoModal = ({ active, onClose, handleSubmit = () => {} }) => {
   const [title, setTitle] = useState("");
+  const [error, setError] = useState("");
 
   const closeModal = () => {
     onClose();
     setTitle("");
+    setError("");
   };
 
   const handleTitleInput = useCallback((value) => setTitle(value), []);
+  const handleError = useCallback((value) => setError(value), []);
 
   return (
     <Modal
@@ -19,16 +28,22 @@ const TodoModal = ({ active, onClose, handleSubmit = () => {} }) => {
       primaryAction={{
         content: "Create",
         onAction: () => {
-          handleSubmit(title);
-          closeModal();
+          if (title.trim() !== "") {
+            handleSubmit(title);
+            closeModal();
+          } else {
+            handleError("Please enter title here");
+          }
         },
         primary: true,
-        disabled: !title.trim(),
+        // disabled: !title.trim(),
       }}
       secondaryActions={[
         {
           content: "Cancel",
-          onAction: closeModal,
+          onAction: () => {
+            closeModal();
+          },
         },
       ]}
     >
@@ -50,6 +65,7 @@ const TodoModal = ({ active, onClose, handleSubmit = () => {} }) => {
             />
           </FormLayout>
         </Form>
+        <TextStyle variation="warning">{error}</TextStyle>
       </Modal.Section>
     </Modal>
   );
