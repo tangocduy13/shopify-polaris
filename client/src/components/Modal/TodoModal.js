@@ -1,10 +1,4 @@
-import {
-  Form,
-  FormLayout,
-  Modal,
-  TextField,
-  TextStyle,
-} from "@shopify/polaris";
+import { Form, FormLayout, Modal, TextField } from "@shopify/polaris";
 import { useCallback, useState } from "react";
 
 const TodoModal = ({ active, onClose, handleSubmit = () => {} }) => {
@@ -32,7 +26,7 @@ const TodoModal = ({ active, onClose, handleSubmit = () => {} }) => {
             handleSubmit(title);
             closeModal();
           } else {
-            handleError("Please enter title here");
+            handleError("Please enter todo title");
           }
         },
         primary: true,
@@ -51,8 +45,12 @@ const TodoModal = ({ active, onClose, handleSubmit = () => {} }) => {
         <Form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSubmit(title);
-            setTitle("");
+            if (title.trim() !== "") {
+              handleSubmit(title);
+              closeModal();
+            } else {
+              handleError("Please enter todo title");
+            }
           }}
         >
           <FormLayout>
@@ -62,10 +60,10 @@ const TodoModal = ({ active, onClose, handleSubmit = () => {} }) => {
               type="text"
               autoComplete="off"
               placeholder="This is my todo name"
+              error={error}
             />
           </FormLayout>
         </Form>
-        <TextStyle variation="warning">{error}</TextStyle>
       </Modal.Section>
     </Modal>
   );
